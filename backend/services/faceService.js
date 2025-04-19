@@ -21,6 +21,7 @@ async function predictFaceEmotion(imagePath) {
   const maxIndex = probs.indexOf(Math.max(...probs));
 
   return {
+    cantidadRostros: 1,
     prediction: EMOTIONS[maxIndex],
     probabilities: EMOTIONS.map((emotion, i) => ({
       emotion,
