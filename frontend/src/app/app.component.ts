@@ -9,63 +9,49 @@ import { MatTableModule } from '@angular/material/table';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements AfterViewInit{
+export class AppComponent {
   title = 'frontend';
-  @ViewChild('drawingCanvas', { static: true }) canvasRef!: ElementRef<HTMLCanvasElement>;
-  private ctx!: CanvasRenderingContext2D;
-  private isDrawing = false;
-  private lastX = 0;
-  private lastY = 0;
 
-  ngAfterViewInit() {
-    const canvas = this.canvasRef.nativeElement;
-    this.ctx = canvas.getContext('2d')!;
-    this.ctx.lineWidth = 3;
-    this.ctx.lineCap = 'round';
-    this.ctx.strokeStyle = '#000000'; // Color del pincel (negro)
+
+
+  resultadoNumero = { 
+    prediction: 2, 
+    probabilities: 
+    [{ number: 0, probability: 17.64 }, { number: 1, probability: 3.44 }, { number: 2, probability: 23.38 }, { number: 3, probability: 3.27 }, { number: 4, probability: 6.98 }, { number: 5, probability: 18.93 }, { number: 6, probability: 14.05 }, { number: 7, probability: 10.32 }, { number: 8, probability: 1.66 }, { number: 9, probability: 0.32 }] }
+
+
+  resultadoRostro = {
+    cantidadRostros: 1,
+    prediction: "enojado",
+    probabilities: [
+      {
+        emotion: "feliz",
+        probability: 20.51
+      },
+      {
+        emotion: "sorpresa",
+        probability: 16.97
+      },
+      {
+        emotion: "neutral",
+        probability: 5.4
+      },
+      {
+        emotion: "enojado",
+        probability: 26.69
+      },
+      {
+        emotion: "asco",
+        probability: 17.23
+      },
+      {
+        emotion: "miedo",
+        probability: 13.09
+      },
+      {
+        emotion: "triste",
+        probability: 0.12
+      }
+    ]
   }
-
-  startDrawing(e: MouseEvent) {
-    this.isDrawing = true;
-    const canvas = this.canvasRef.nativeElement;
-    const rect = canvas.getBoundingClientRect();
-    this.lastX = e.clientX - rect.left;
-    this.lastY = e.clientY - rect.top;
-  }
-
-  draw(e: MouseEvent) {
-    if (!this.isDrawing) return;
-    
-    const canvas = this.canvasRef.nativeElement;
-    const rect = canvas.getBoundingClientRect();
-    const currentX = e.clientX - rect.left;
-    const currentY = e.clientY - rect.top;
-
-    this.ctx.beginPath();
-    this.ctx.moveTo(this.lastX, this.lastY);
-    this.ctx.lineTo(currentX, currentY);
-    this.ctx.stroke();
-
-    this.lastX = currentX;
-    this.lastY = currentY;
-  }
-
-  stopDrawing() {
-    this.isDrawing = false;
-  }
-
-  clearCanvas() {
-    const canvas = this.canvasRef.nativeElement;
-    this.ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
-
-  saveAsPNG() {
-    const canvas = this.canvasRef.nativeElement;
-    const link = document.createElement('a');
-    link.download = 'dibujo.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-  }
-  
-
 }
