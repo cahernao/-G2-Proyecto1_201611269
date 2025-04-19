@@ -1,11 +1,12 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatTableModule } from '@angular/material/table';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
-  imports: [MatTabsModule, MatGridListModule, MatTableModule],
+  imports: [MatTabsModule, MatGridListModule, HttpClientModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -68,14 +69,37 @@ export class AppComponent implements AfterViewInit {
     this.ctx.beginPath();
   }
 
-  evaluarNumero() {
-    // Aquí irá la lógica para evaluar el número dibujado
-    console.log('Evaluando número...');
-    // Por ahora solo simulamos una evaluación
-    // Esta función se conectaría a tu backend para el análisis real
-  }
-
   ////// FIN CANVAS
+
+  //////      INICIO CONSUMO HTTP
+
+  constructor(private http: HttpClient) {}
+
+  evaluarNumero() {
+    const canvas = this.canvasRef.nativeElement;
+    
+    canvas.toBlob(blob => {
+      if (blob) {
+        const formData = new FormData();
+        formData.append('image', blob, 'canvas-image.png');
+  
+        this.http.post('http://localhost:3000/predict-number', formData)
+          .subscribe({
+            next: (res:any) => {
+              console.log('Respuesta del backend:', res);
+              this.resultadoNumero = res;
+              // Aquí puedes actualizar resultadoNumero con la respuesta del backend
+            },
+            error: (err) => {
+              console.error('Error al enviar imagen:', err);
+            }
+          });
+      }
+    }, 'image/png');
+  }
+  
+
+  /////     FIN CONSUMO HTTP
 
   onImageSelected(event: any): void {
     const file = event.target.files[0];
