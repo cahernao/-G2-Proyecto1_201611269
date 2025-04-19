@@ -11,6 +11,16 @@ import { MatTableModule } from '@angular/material/table';
 })
 export class AppComponent {
   title = 'frontend';
+  imagenSeleccionada: string | ArrayBuffer | null = null;
+
+  onImageSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = e => this.imagenSeleccionada = reader.result;
+      reader.readAsDataURL(file);
+    }
+  }
 
 
 
