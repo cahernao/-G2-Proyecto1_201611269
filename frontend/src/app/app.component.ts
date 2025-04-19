@@ -21,6 +21,8 @@ export class AppComponent implements AfterViewInit {
   private ctx!: CanvasRenderingContext2D;
   private isDrawing = false;
 
+  
+
   ngAfterViewInit() {
     this.setupCanvas();
   }
@@ -109,6 +111,48 @@ export class AppComponent implements AfterViewInit {
       reader.readAsDataURL(file);
     }
   }
+
+
+  ////      INICIO CONSUMO POR IMAGEN
+  // imagenSeleccionada: string | ArrayBuffer | null = null;
+archivoSeleccionado: File | null = null;
+
+onImageSelected2(event: any): void {
+  const file = event.target.files[0];
+  if (file) {
+    this.archivoSeleccionado = file;
+
+    const reader = new FileReader();
+    reader.onload = e => this.imagenSeleccionada = reader.result;
+    reader.readAsDataURL(file);
+  }
+}
+
+analizarRostro(): void {
+  if (!this.archivoSeleccionado) {
+    console.warn('No se ha seleccionado ninguna imagen.');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('image', this.archivoSeleccionado);
+
+  this.http.post('http://localhost:3000/predict-face', formData)
+    .subscribe({
+      next: (res:any) => {
+        console.log('Respuesta del backend (rostro):', res);
+        this.resultadoRostro = res;
+        // Aquí puedes actualizar resultadoRostro con los datos reales
+        // this.resultadoRostro = res;
+      },
+      error: (err) => {
+        console.error('Error al analizar rostro:', err);
+      }
+    });
+}
+
+
+  ////      FIN CONSUMO POR IMAGEN
 
 
 
