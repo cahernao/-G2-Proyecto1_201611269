@@ -1,91 +1,82 @@
 <!-- frontend/src/app/app.component.html -->
-<div class="container mt-4">
-  <ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="number-tab" data-bs-toggle="tab" data-bs-target="#number" type="button" role="tab">Números</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="face-tab" data-bs-toggle="tab" data-bs-target="#face" type="button" role="tab">Rostros</button>
-    </li>
-  </ul>
-
-  <div class="tab-content mt-3" id="myTabContent">
-
-    <!-- TAB: NÚMEROS -->
-    <div class="tab-pane fade show active" id="number" role="tabpanel">
-      <div class="row">
-        <!-- Canvas + Botones -->
-        <div class="col-md-6">
-          <h5>Dibujar Número</h5>
-          <div class="border p-2 bg-light" style="height: 280px">
-            <!-- Canvas aquí -->
-            <canvas id="canvas" width="250" height="250" class="border"></canvas>
-          </div>
-          <div class="mt-2">
-            <button class="btn btn-secondary me-2">Limpiar</button>
-            <button class="btn btn-primary">Evaluar</button>
-          </div>
+<mat-tab-group>
+  <!-- TAB: NÚMEROS -->
+  <mat-tab label="Números">
+    <mat-grid-list cols="2" rowHeight="800px">
+      <mat-grid-tile>
+        <div class="col">
+          <h1>Canvas</h1>
+          <canvas></canvas>
+          <button>Limpiar</button>
+          <button>Evaluar</button>
         </div>
-
-        <!-- Tabla de resultados -->
-        <div class="col-md-6">
-          <h5>Predicción</h5>
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Número</th>
-                <th>Probabilidad (%)</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (r of resultadoNumero.probabilities; track $index) {
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div>
+          <h1>Resultado</h1>
+          <div>
+            <h4>Numero real</h4>
+            <h2>{{resultadoNumero.prediction}}</h2>
+          </div>
+          <div>
+            <table class="table table-striped">
+              <thead>
                 <tr>
-                <td>{{ r.number }}</td>
-                <td>{{ r.probability }}</td>
-              </tr>
-              }
-            </tbody>
-          </table>
+                  <th>Numero</th>
+                  <th>Probabilidad (%)</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (r of resultadoNumero.probabilities; track $index) {
+                  <tr>
+                    <td>{{r.number}}</td>
+                    <td>{{ r.probability }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-    </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-tab>
 
-    <!-- TAB: ROSTROS -->
-    <div class="tab-pane fade" id="face" role="tabpanel">
-      <div class="row">
-        <!-- Input de imagen -->
-        <div class="col-md-6">
+  <!-- TAB: ROSTROS -->
+  <mat-tab label="Rostros">
+
+      <mat-grid-list cols="2" rowHeight="800px">
+        <mat-grid-tile>
           <h5>Cargar Imagen</h5>
           <input type="file" class="form-control" accept="image/*">
           <div class="mt-2">
-            <button class="btn btn-primary">Analizar</button>
+            <button mat-raised-button color="accent">Analizar</button>
           </div>
-        </div>
-
-        <!-- Resultados de emociones -->
-        <div class="col-md-6">
-          <h5>Resultado</h5>
-          <p><strong>Rostros detectados:</strong> {{ resultadoRostro?.cantidadRostros }}</p>
-          <p><strong>Emoción principal:</strong> {{ resultadoRostro?.prediction }}</p>
-
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Emoción</th>
-                <th>Probabilidad (%)</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (e of resultadoRostro.probabilities; track $index) {
-                <tr>
-                  <td>{{ e.emotion }}</td>
-                  <td>{{ e.probability }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div>
+            <h1>Resultado</h1>
+            <p><strong>Rostros detectados:</strong> {{ resultadoRostro.cantidadRostros }}</p>
+            <p><strong>Emoción principal:</strong> {{ resultadoRostro.prediction }}</p>
+            <div>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Emoción</th>
+                    <th>Probabilidad (%)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (e of resultadoRostro.probabilities; track $index) {
+                    <tr>
+                      <td>{{ e.emotion }}</td>
+                      <td>{{ e.probability }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+  </mat-tab>
+</mat-tab-group>
