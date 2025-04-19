@@ -6,9 +6,15 @@
       <mat-grid-tile>
         <div class="col">
           <h1>Canvas</h1>
-          <canvas></canvas>
-          <button>Limpiar</button>
-          <button>Evaluar</button>
+          <!-- En la sección del canvas -->
+<canvas #canvas 
+(mousedown)="startDrawing($event)" 
+(mousemove)="draw($event)" 
+(mouseup)="stopDrawing()" 
+(mouseleave)="stopDrawing()"
+style="border: 1px solid #000; background-color: white;"></canvas>
+<button mat-raised-button color="warn" (click)="clearCanvas()">Limpiar</button>
+<button mat-raised-button color="primary" (click)="evaluarNumero()">Evaluar</button>
         </div>
       </mat-grid-tile>
       <mat-grid-tile>

@@ -9,9 +9,73 @@ import { MatTableModule } from '@angular/material/table';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
   title = 'frontend';
   imagenSeleccionada: string | ArrayBuffer | null = null;
+
+
+  //// CANVAS
+  
+  @ViewChild('canvas') canvasRef!: ElementRef<HTMLCanvasElement>;
+  private ctx!: CanvasRenderingContext2D;
+  private isDrawing = false;
+
+  ngAfterViewInit() {
+    this.setupCanvas();
+  }
+
+  setupCanvas() {
+    const canvas = this.canvasRef.nativeElement;
+    canvas.width = 280;
+    canvas.height = 280;
+    
+    this.ctx = canvas.getContext('2d')!;
+    this.ctx.lineWidth = 15;
+    this.ctx.lineCap = 'round';
+    this.ctx.strokeStyle = 'black';
+    this.ctx.fillStyle = 'white';
+    this.ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+
+  startDrawing(event: MouseEvent) {
+    this.isDrawing = true;
+    this.draw(event);
+  }
+
+  draw(event: MouseEvent) {
+    if (!this.isDrawing) return;
+    
+    const canvas = this.canvasRef.nativeElement;
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    
+    this.ctx.lineTo(x, y);
+    this.ctx.stroke();
+    this.ctx.beginPath();
+    this.ctx.moveTo(x, y);
+  }
+
+  stopDrawing() {
+    this.isDrawing = false;
+    this.ctx.beginPath();
+  }
+
+  clearCanvas() {
+    const canvas = this.canvasRef.nativeElement;
+    this.ctx.fillStyle = 'white';
+    this.ctx.fillRect(0, 0, canvas.width, canvas.height);
+    this.ctx.beginPath();
+  }
+
+  evaluarNumero() {
+    // Aquí irá la lógica para evaluar el número dibujado
+    console.log('Evaluando número...');
+    // Por ahora solo simulamos una evaluación
+    // Esta función se conectaría a tu backend para el análisis real
+  }
+
+  ////// FIN CANVAS
 
   onImageSelected(event: any): void {
     const file = event.target.files[0];
