@@ -11,7 +11,7 @@ Una vez subidos se envia el comando, en la carpeta training / numeros
 nodejs train.js
 ```
 
-Este generará unos archivos .bin y .json que será utilizados por el backend, en este caso que será utilizados por el backend.
+Este generará unos archivos .bin y .json que será utilizados por el backend, se guardaran en la carpeta backend/modelos
 
 
 # Paso dos

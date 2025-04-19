@@ -1,0 +1,27 @@
+.drawing-container {
+    text-align: center;
+    margin: 20px;
+  }
+  
+  canvas {
+    border: 1px solid #000;
+    background-color: white;
+  }
+  
+  .buttons {
+    margin-top: 10px;
+  }
+  
+  button {
+    padding: 8px 15px;
+    margin: 0 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
