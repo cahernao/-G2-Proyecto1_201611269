@@ -136,9 +136,5 @@ dist
 .pnp.*
 
 
-*.png
-*.jpg
 
-training/numeros/dataset/
-backend/models/
 backend/uploads

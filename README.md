@@ -5,6 +5,12 @@
 # Paso uno
 Se debe agregar el contenido del dataset de elementos para crear el entrenamiento, mientras más datos mejor.
 
+Instalar los apartados de tensorflow
+
+```bash
+npm install @tensorflow/tfjs-node
+```
+
 Una vez subidos se envia el comando, en la carpeta training / numeros
 
 ```bash
